@@ -244,8 +244,8 @@ export const actions: Actions = {
 		await db
 			.prepare(
 				`INSERT INTO sites
-				 (name, url, logo, catelog, description, sort_order, hidden, category, tags, featured)
-				 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+				 (name, url, logo, catelog, description, sort_order, hidden, category, tags, featured, reminder_qr)
+				 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 			)
 			.bind(
 				name,
@@ -257,7 +257,8 @@ export const actions: Actions = {
 				boolValue(form, 'hidden') ? 1 : 0,
 				categoryValue(form),
 				JSON.stringify(tags.length ? tags : fallbackTags),
-				boolValue(form, 'featured') ? 1 : 0
+				boolValue(form, 'featured') ? 1 : 0,
+				boolValue(form, 'reminder_qr') ? '1' : ''
 			)
 			.run();
 		return { success: '推荐已新增。' };
@@ -269,12 +270,11 @@ export const actions: Actions = {
 		const form = await request.formData();
 		const id = intValue(form, 'id');
 		if (!id) return fail(400, { error: '缺少推荐 ID。' });
-
 		await db
 			.prepare(
 				`UPDATE sites
 				 SET name = ?, url = ?, logo = ?, catelog = ?, description = ?, sort_order = ?,
-				     hidden = ?, category = ?, tags = ?, featured = ?, updated_at = CURRENT_TIMESTAMP
+				     hidden = ?, category = ?, tags = ?, featured = ?, reminder_qr = ?, updated_at = CURRENT_TIMESTAMP
 				 WHERE id = ?`
 			)
 			.bind(
@@ -288,6 +288,7 @@ export const actions: Actions = {
 				categoryValue(form),
 				JSON.stringify(tagsValue(form)),
 				boolValue(form, 'featured') ? 1 : 0,
+				boolValue(form, 'reminder_qr') ? '1' : '',
 				id
 			)
 			.run();

@@ -22,6 +22,7 @@ export type Site = {
 	category: CategoryName;
 	tags: string[];
 	featured: number;
+	showReminderQr: boolean;
 };
 
 type RawSite = {
@@ -33,6 +34,7 @@ type RawSite = {
 	desc: string;
 	sort: number;
 	hide: number;
+	reminder_qr?: string;
 };
 
 export const categories: Category[] = (categoriesData as Category[]).map((category) => ({
@@ -146,7 +148,8 @@ export function enrichSite(site: RawSite & Partial<Pick<Site, 'category' | 'tags
 		...site,
 		category: site.category ?? categoryById.get(site.id) ?? '数字服务与好物',
 		tags: site.tags ?? buildTags(site),
-		featured: site.featured ?? (featuredIds.has(site.id) ? 1 : 0)
+		featured: site.featured ?? (featuredIds.has(site.id) ? 1 : 0),
+		showReminderQr: site.reminder_qr === '1'
 	} satisfies Site;
 }
 

@@ -39,6 +39,7 @@
 		url: '',
 		logo: '',
 		desc: '',
+		showReminderQr: false,
 		category: '数字服务与好物',
 		tags: '',
 		sort: '100',
@@ -47,6 +48,7 @@
 	});
 
 	const wechatQr = '/wechat-qrcode.jpg';
+	const reminderQr = '/reminder-qrcode.jpg';
 
 	const footerNotes = [
 		{
@@ -204,6 +206,7 @@
 			url: '',
 			logo: '',
 			desc: '',
+			showReminderQr: false,
 			category,
 			tags: '',
 			sort: '100',
@@ -221,6 +224,7 @@
 			url: site.url,
 			logo: site.logo,
 			desc: site.desc,
+			showReminderQr: site.showReminderQr,
 			category: site.category,
 			tags: site.tags.join(', '),
 			sort: String(site.sort),
@@ -667,8 +671,16 @@
 				<h2>{reminderSite.name}</h2>
 				<div class="reminder-note">
 					<span class="reminder-icon" aria-hidden="true">✨</span>
-					<p>{reminderText(reminderSite)}</p>
+					<div class="reminder-content">
+						<p>{reminderText(reminderSite)}</p>
+					</div>
 				</div>
+				{#if reminderSite.showReminderQr}
+					<div class="reminder-qr-panel">
+						<img class="reminder-qr" src={reminderQr} alt="提醒二维码" />
+						<p>建议先截图保存，再用微信扫一扫识别二维码。</p>
+					</div>
+				{/if}
 					<div class="reminder-actions">
 						<button type="button" class="secondary-button" onclick={() => (reminderSite = null)}>先不打开 👀</button>
 						{#if hasUrl(reminderSite.url)}
@@ -714,6 +726,10 @@
 					<label class="wide">
 						提醒备注
 						<input name="desc" bind:value={editor.desc} />
+					</label>
+					<label class="wide checkbox-row">
+						<input name="reminder_qr" type="checkbox" bind:checked={editor.showReminderQr} />
+						提醒弹窗显示统一二维码
 					</label>
 					<div class="tag-editor wide">
 						标签
@@ -1825,7 +1841,7 @@
 	}
 
 	.reminder-modal {
-		width: min(660px, 100%);
+		width: min(720px, 100%);
 		border: 1px solid rgba(226, 232, 240, 0.9);
 		border-radius: 16px;
 		padding: 32px;
@@ -1884,6 +1900,39 @@
 		color: #334155;
 		font-size: 18px;
 		line-height: 1.75;
+	}
+
+	.reminder-content {
+		min-width: 0;
+	}
+
+	.reminder-qr-panel {
+		display: grid;
+		justify-items: center;
+		gap: 10px;
+		margin-top: 18px;
+		border: 1px solid #dbe3ef;
+		border-radius: 16px;
+		background: #ffffff;
+		padding: 18px;
+	}
+
+	.reminder-qr-panel p {
+		margin: 0;
+		color: #64748b;
+		font-size: 14px;
+		font-weight: 800;
+		line-height: 1.45;
+		text-align: center;
+	}
+
+	.reminder-qr {
+		display: block;
+		width: min(280px, 78vw);
+		max-height: 48vh;
+		object-fit: contain;
+		border-radius: 12px;
+		background: #ffffff;
 	}
 
 	.reminder-icon {
@@ -2236,6 +2285,16 @@
 		color: #e5e7eb;
 	}
 
+	:global(body.dark) .reminder-qr-panel,
+	:global(body.dark) .reminder-qr {
+		border-color: rgba(96, 165, 250, 0.22);
+		background: #ffffff;
+	}
+
+	:global(body.dark) .reminder-qr-panel p {
+		color: #475569;
+	}
+
 	:global(body.dark) .auth-card,
 	:global(body.dark) .auth-card .account-panel,
 	:global(body.dark) .auth-card-tabs button,
@@ -2430,6 +2489,71 @@
 		.site-card.editing,
 		.site-editor-form {
 			grid-template-columns: 1fr;
+		}
+
+		.modal-backdrop {
+			padding: 12px;
+		}
+
+		.reminder-modal {
+			max-height: calc(100vh - 24px);
+			overflow-y: auto;
+			border-radius: 14px;
+			padding: 24px 18px 18px;
+		}
+
+		.reminder-modal h2 {
+			margin-top: 10px;
+			font-size: 34px;
+		}
+
+		.reminder-note {
+			grid-template-columns: 32px minmax(0, 1fr);
+			gap: 10px;
+			margin-top: 18px;
+			padding: 14px;
+		}
+
+		.reminder-note p {
+			font-size: 16px;
+			line-height: 1.65;
+		}
+
+		.reminder-icon {
+			width: 32px;
+			height: 32px;
+			border-radius: 9px;
+		}
+
+		.reminder-qr-panel {
+			margin-top: 14px;
+			padding: 12px;
+		}
+
+		.reminder-qr {
+			width: min(330px, 82vw);
+			max-height: 44vh;
+		}
+
+		.reminder-actions {
+			position: sticky;
+			bottom: 0;
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 10px;
+			margin-top: 16px;
+			padding-top: 12px;
+			background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff 32%);
+		}
+
+		:global(body.dark) .reminder-actions {
+			background: linear-gradient(to bottom, rgba(17, 24, 39, 0), #111827 32%);
+		}
+
+		.reminder-actions .primary-button,
+		.reminder-actions .secondary-button {
+			justify-content: center;
+			width: 100%;
 		}
 
 		.card-actions {

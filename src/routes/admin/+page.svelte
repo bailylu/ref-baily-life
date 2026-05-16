@@ -88,6 +88,10 @@
 					提醒备注
 					<input name="desc" placeholder="奖励、注意事项或一句介绍" />
 				</label>
+				<label class="wide checkbox-line">
+					<input name="reminder_qr" type="checkbox" />
+					提醒弹窗显示统一二维码
+				</label>
 				<label class="wide">
 					标签
 					<input name="tags" placeholder="美国, 开户奖励, 注意条件" />
@@ -153,6 +157,10 @@
 						<label class="wide">
 							提醒备注
 							<input name="desc" value={site.desc} />
+						</label>
+						<label class="wide checkbox-line">
+							<input name="reminder_qr" type="checkbox" checked={site.showReminderQr} />
+							提醒弹窗显示统一二维码
 						</label>
 						<label class="wide">
 							标签
@@ -424,6 +432,14 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+	}
+
+	.checkbox-line {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 13px;
+		font-weight: 800;
 	}
 
 	details {

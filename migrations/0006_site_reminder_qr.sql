@@ -1,0 +1,1 @@
+ALTER TABLE sites ADD COLUMN reminder_qr TEXT DEFAULT '';

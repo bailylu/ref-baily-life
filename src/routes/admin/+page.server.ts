@@ -75,8 +75,8 @@ export const actions: Actions = {
 		await db
 			.prepare(
 				`INSERT INTO sites
-				 (name, url, logo, catelog, description, sort_order, hidden, category, tags, featured)
-				 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+				 (name, url, logo, catelog, description, sort_order, hidden, category, tags, featured, reminder_qr)
+				 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 			)
 			.bind(
 				text(form, 'name'),
@@ -88,7 +88,8 @@ export const actions: Actions = {
 				boolValue(form, 'hidden') ? 1 : 0,
 				categoryValue(form),
 				JSON.stringify(tagsValue(form)),
-				boolValue(form, 'featured') ? 1 : 0
+				boolValue(form, 'featured') ? 1 : 0,
+				boolValue(form, 'reminder_qr') ? '1' : ''
 			)
 			.run();
 
@@ -106,7 +107,7 @@ export const actions: Actions = {
 			.prepare(
 				`UPDATE sites
 				 SET name = ?, url = ?, logo = ?, catelog = ?, description = ?, sort_order = ?,
-				     hidden = ?, category = ?, tags = ?, featured = ?, updated_at = CURRENT_TIMESTAMP
+				     hidden = ?, category = ?, tags = ?, featured = ?, reminder_qr = ?, updated_at = CURRENT_TIMESTAMP
 				 WHERE id = ?`
 			)
 			.bind(
@@ -120,6 +121,7 @@ export const actions: Actions = {
 				categoryValue(form),
 				JSON.stringify(tagsValue(form)),
 				boolValue(form, 'featured') ? 1 : 0,
+				boolValue(form, 'reminder_qr') ? '1' : '',
 				id
 			)
 			.run();

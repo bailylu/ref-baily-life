@@ -88,6 +88,10 @@
 					提醒备注
 					<input name="desc" placeholder="奖励、注意事项或一句介绍" />
 				</label>
+				<label class="wide">
+					教程 URL
+					<input name="tutorial_url" placeholder="https://..." />
+				</label>
 				<label class="wide checkbox-line">
 					<input name="reminder_qr" type="checkbox" />
 					提醒弹窗显示统一二维码
@@ -157,6 +161,10 @@
 						<label class="wide">
 							提醒备注
 							<input name="desc" value={site.desc} />
+						</label>
+						<label class="wide">
+							教程 URL
+							<input name="tutorial_url" value={site.tutorialUrl} />
 						</label>
 						<label class="wide checkbox-line">
 							<input name="reminder_qr" type="checkbox" checked={site.showReminderQr} />

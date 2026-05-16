@@ -22,6 +22,7 @@ type SiteRow = {
 	tags: string | null;
 	featured: number;
 	reminder_qr: string | null;
+	tutorial_url: string | null;
 };
 
 export function dbFromPlatform(platform: App.Platform | undefined) {
@@ -48,7 +49,8 @@ function rowToSite(row: SiteRow): Site {
 		category: row.category,
 		tags,
 		featured: row.featured,
-		showReminderQr: row.reminder_qr === '1'
+		showReminderQr: row.reminder_qr === '1',
+		tutorialUrl: row.tutorial_url ?? ''
 	};
 }
 
@@ -67,7 +69,7 @@ export async function listPublicSites(db: D1Database | undefined, options: { inc
 		const [sitesResult, categoriesResult] = await Promise.all([
 			db
 			.prepare(
-				`SELECT id, name, url, logo, catelog, description, sort_order, hidden, category, tags, featured, reminder_qr
+				`SELECT id, name, url, logo, catelog, description, sort_order, hidden, category, tags, featured, reminder_qr, tutorial_url
 				 FROM sites
 				 ${hiddenFilter}
 				 ORDER BY featured DESC, sort_order ASC, id ASC`
@@ -118,7 +120,7 @@ export async function listAdminSites(db: D1Database | undefined) {
 	if (!db) return [];
 	const result = await db
 		.prepare(
-			`SELECT id, name, url, logo, catelog, description, sort_order, hidden, category, tags, featured, reminder_qr
+			`SELECT id, name, url, logo, catelog, description, sort_order, hidden, category, tags, featured, reminder_qr, tutorial_url
 			 FROM sites
 			 ORDER BY hidden ASC, category ASC, sort_order ASC, id ASC`
 		)

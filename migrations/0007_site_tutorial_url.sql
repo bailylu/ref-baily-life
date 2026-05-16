@@ -1,0 +1,1 @@
+ALTER TABLE sites ADD COLUMN tutorial_url TEXT DEFAULT '';

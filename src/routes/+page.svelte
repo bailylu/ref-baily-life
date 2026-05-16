@@ -39,6 +39,7 @@
 		url: '',
 		logo: '',
 		desc: '',
+		tutorialUrl: '',
 		showReminderQr: false,
 		category: '数字服务与好物',
 		tags: '',
@@ -206,6 +207,7 @@
 			url: '',
 			logo: '',
 			desc: '',
+			tutorialUrl: '',
 			showReminderQr: false,
 			category,
 			tags: '',
@@ -224,6 +226,7 @@
 			url: site.url,
 			logo: site.logo,
 			desc: site.desc,
+			tutorialUrl: site.tutorialUrl,
 			showReminderQr: site.showReminderQr,
 			category: site.category,
 			tags: site.tags.join(', '),
@@ -682,7 +685,11 @@
 					</div>
 				{/if}
 					<div class="reminder-actions">
-						<button type="button" class="secondary-button" onclick={() => (reminderSite = null)}>先不打开 👀</button>
+						{#if hasUrl(reminderSite.tutorialUrl)}
+							<a class="secondary-button" href={normalizeUrl(reminderSite.tutorialUrl)} target="_blank" rel="noreferrer">
+								查看教程
+							</a>
+						{/if}
 						{#if hasUrl(reminderSite.url)}
 							<a class="primary-button" href={normalizeUrl(reminderSite.url)} target="_blank" rel="noreferrer" onclick={() => (reminderSite = null)}>
 								继续访问 🚀
@@ -726,6 +733,10 @@
 					<label class="wide">
 						提醒备注
 						<input name="desc" bind:value={editor.desc} />
+					</label>
+					<label class="wide">
+						教程 URL
+						<input name="tutorial_url" bind:value={editor.tutorialUrl} placeholder="https://..." />
 					</label>
 					<label class="wide checkbox-row">
 						<input name="reminder_qr" type="checkbox" bind:checked={editor.showReminderQr} />

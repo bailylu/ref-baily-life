@@ -244,8 +244,8 @@ export const actions: Actions = {
 		await db
 			.prepare(
 				`INSERT INTO sites
-				 (name, url, logo, catelog, description, sort_order, hidden, category, tags, featured, reminder_qr)
-				 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+				 (name, url, logo, catelog, description, sort_order, hidden, category, tags, featured, reminder_qr, tutorial_url)
+				 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 			)
 			.bind(
 				name,
@@ -258,7 +258,8 @@ export const actions: Actions = {
 				categoryValue(form),
 				JSON.stringify(tags.length ? tags : fallbackTags),
 				boolValue(form, 'featured') ? 1 : 0,
-				boolValue(form, 'reminder_qr') ? '1' : ''
+				boolValue(form, 'reminder_qr') ? '1' : '',
+				text(form, 'tutorial_url')
 			)
 			.run();
 		return { success: '推荐已新增。' };
@@ -274,7 +275,7 @@ export const actions: Actions = {
 			.prepare(
 				`UPDATE sites
 				 SET name = ?, url = ?, logo = ?, catelog = ?, description = ?, sort_order = ?,
-				     hidden = ?, category = ?, tags = ?, featured = ?, reminder_qr = ?, updated_at = CURRENT_TIMESTAMP
+				     hidden = ?, category = ?, tags = ?, featured = ?, reminder_qr = ?, tutorial_url = ?, updated_at = CURRENT_TIMESTAMP
 				 WHERE id = ?`
 			)
 			.bind(
@@ -289,6 +290,7 @@ export const actions: Actions = {
 				JSON.stringify(tagsValue(form)),
 				boolValue(form, 'featured') ? 1 : 0,
 				boolValue(form, 'reminder_qr') ? '1' : '',
+				text(form, 'tutorial_url'),
 				id
 			)
 			.run();
